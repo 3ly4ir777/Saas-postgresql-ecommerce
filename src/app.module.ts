@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm'
+import { ConfigModule, ConfigService } from '@nestjs/config'; // 👈 importa ConfigService
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProductsModule } from './products/products.module';
@@ -15,22 +15,36 @@ import { TaxesModule } from './taxes/taxes.module';
 import { DiscountsModule } from './discounts/discounts.module';
 
 @Module({
-  imports:[
+  imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      // Opcional: ignorar .env en producción
+      ignoreEnvFile: process.env.NODE_ENV === 'production',
     }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_PORT || '5433', 10 ),
-      username: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE,
-      autoLoadEntities: true,
-      synchronize: true, //disable in production
-
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        url: configService.get<string>('DATABASE_URL'),
+        autoLoadEntities: true,
+        synchronize: true,
+        ssl: configService.get('NODE_ENV') === 'production' 
+          ? { rejectUnauthorized: false } 
+          : false,
+      }),
     }),
-ProductsModule, UsersModule, AuthModule, CategoriesModule, OrdersModule, PaymentsModule, CouponsModule, ShippingModule, TaxesModule, DiscountsModule],
+    ProductsModule,
+    UsersModule,
+    AuthModule,
+    CategoriesModule,
+    OrdersModule,
+    PaymentsModule,
+    CouponsModule,
+    ShippingModule,
+    TaxesModule,
+    DiscountsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
