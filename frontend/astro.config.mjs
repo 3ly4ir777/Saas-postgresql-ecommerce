@@ -1,0 +1,31 @@
+import { defineConfig } from 'astro/config';
+import tailwind from '@astrojs/tailwind';
+import react from '@astrojs/react';
+import node from '@astrojs/node';
+
+// export default defineConfig({
+//   integrations: [
+//     output('server'),
+
+//     tailwind({
+//       nesting: true, // Esto ayuda con PostCSS
+//     }), 
+//     react()
+//   ],
+// });
+
+export default defineConfig({
+  output: 'server',
+  adapter: node({mode: 'standalone'}),
+  integrations: [tailwind({nesting: true,}), react()],
+
+  vite: {
+    ssr: {
+      noExternal: ['auth0'],
+    },
+    optimizeDeps: {
+      exclude: ['auth0'],
+    },
+  },
+
+});

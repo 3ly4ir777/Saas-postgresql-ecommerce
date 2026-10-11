@@ -1,98 +1,94 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🛒 E-Commerce SaaS Ecosystem • Full-Stack Monorepo
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+¡Bienvenido al núcleo de nuestro **E-Commerce SaaS**, un ecosistema modular diseñado para ofrecer tiendas virtuales escalables y de alta velocidad bajo un modelo Multi-Tenant. 
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Este repositorio está estructurado como un **Monorepo** minimalista de alto rendimiento, unificando los historiales de desarrollo del backend y el frontend moderno bajo una arquitectura desacoplada que prioriza la velocidad de despliegue y la seguridad de los datos.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🛠️ Estructura del Ecosistema
 
-## Project setup
+El repositorio centraliza el desarrollo dividiendo la lógica en dos grandes bloques auto-contenidos, manteniendo la raíz libre de ruido visual:
 
+### 🖥️ Frontend e Interfaz (`/frontend`)
+- **`frontend` (Astro • Tailwind CSS):** La tienda online principal orientada al cliente. Enfoque extremo en rendimiento web, SEO perfecto en las páginas de productos, hidratación selectiva y una experiencia de usuario fluida basada en componentes tipados.
+
+### ⚙️ Backend Core & DB (`/backend`)
+- **`backend` (NestJS • PostgreSQL):** La API central del SaaS. Diseñada bajo una arquitectura empresarial estructurada con inyección de dependencias robusta, encargada de la lógica de negocio, pasarelas de pago, autenticación y gestión de inventarios relacionales.
+
+---
+
+## 🚀 Arquitectura de Infraestructura y Despliegue
+
+El ecosistema aprovecha al máximo el aislamiento de entornos mediante contenedores ligeros y despliegues serverless:
+
+| Componente | Stack Tecnológico | Entorno de Desarrollo (Linux) | Entorno de Producción |
+| :--- | :--- | :--- | :--- |
+| **Frontend UI** | Astro / Tailwind / TypeScript | Native (`pnpm dev`) | **Vercel** / **Netlify** *(SSG/SSR)* |
+| **Backend API** | NestJS / TypeScript | Podman Container (`api`) | **Render** *(Micro-VMs)* |
+| **Base de Datos** | PostgreSQL (Relacional) | Podman Container (`db`) | **Neon** / **Supabase** *(Serverless)* |
+
+---
+
+## 📦 Configuración del Entorno de Desarrollo (Linux Stack)
+
+Este proyecto está desarrollado en entornos GNU/Linux (**Fedora / Linux Mint**) utilizando contenedores **Rootless** mediante Podman y gestión de paquetes ultra veloz con `pnpm`.
+
+### 1. Clonar el Monorepo
 ```bash
-$ pnpm install
+git clone git@github.com:3ly4ir777/Saas-postgresql-ecommerce.git
+cd Saas-postgresql-ecommerce
 ```
 
-## Compile and run the project
-
+### 2. Configuración de Entornos `.env`
+El backend requiere variables específicas para enlazar la base de datos PostgreSQL. Configura tu archivo local dentro de la subcarpeta correspondiente:
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+cp backend/.env.example backend/.env
 ```
 
-## Run tests
+### 3. Levantar Infraestructura con Podman 🐋
+El backend y la base de datos estan completamente preparado para correr en contenedores de forma aislada y segura en el espacio de usuario (sin necesidad de `sudo`) a través de **Podman**. Es 100% compatible tanto con **Podman** (Recomendado 🚀) como con **Docker**.
 
 ```bash
-# unit tests
-$ pnpm run test
+# Entra a la carpeta del backend
+cd backend
 
-# e2e tests
-$ pnpm run test:e2e
+# Orquesta los contenedores en segundo plano
+podman-compose up -d
 
-# test coverage
-$ pnpm run test:cov
+# Opción B: Si usas Docker tradicional
+docker compose up -d
 ```
+*Para apagar los servicios e infraestructura, ejecuta `podman-compose down`.*
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 4. Lanzar el Frontend de Astro 🚀
+Una vez que el backend esté arriba, enciende la interfaz de usuario:
 
 ```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+# Abre una nueva terminal en la raíz y entra al frontend
+cd frontend
+
+# Instala dependencias y arranca el servidor local
+pnpm install
+pnpm dev
+```
+*El frontend se abrirá automáticamente en `http://localhost:4321`.*
+
+---
+
+## 📁 Árbol de Directorios del Repositorio
+
+```text
+├── frontend/             # Aplicación cliente y vistas de la tienda (Astro)
+└── backend/              # Servidor API REST y Orquestación (NestJS)
+    ├── src/              # Código fuente de la API
+    ├── Dockerfile        # Definición de imagen para el contenedor de la app
+    ├── docker-compose.yml# Orquestador de servicios (API + PostgreSQL)
+    └── .env              # Variables de entorno locales (Excluido de Git)
+├── LICENSE               # Licencia del proyecto
+└── README.md             # Este documento
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+***
 
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+⭐ **Ingeniería de Software Diseñada con Entusiasmo por:** Elías Náñez (Ely / 3ly4ir777)

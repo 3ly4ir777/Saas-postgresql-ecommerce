@@ -1,0 +1,21 @@
+---
+// src/layouts/DashboardLayout.astro
+import Sidebar from '../components/Sidebar'; 
+import '../styles/global.css';
+const { title } = Astro.props;
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+  </head>
+  <body class="bg-gray-100 flex min-h-screen overflow-x-hidden">
+    <Sidebar client:load /> 
+    
+    <main class="flex-1 p-4 md:p-8 pt-20 lg:pt-8">
+      <slot />
+    </main>
+  </body>
+</html>

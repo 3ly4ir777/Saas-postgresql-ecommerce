@@ -1,0 +1,21 @@
+---
+import LoginForm from '../components/LoginForm';
+import '../styles/global.css';
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Login | Admin Dashboard</title>
+  </head>
+  <body class="bg-slate-50 min-h-screen flex items-center justify-center p-4">
+    {/* Fondo decorativo opcional */}
+    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+      <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-100 rounded-full blur-[120px] opacity-50"></div>
+      <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-100 rounded-full blur-[120px] opacity-50"></div>
+    </div>
+
+    <LoginForm client:load />
+  </body>
+</html>

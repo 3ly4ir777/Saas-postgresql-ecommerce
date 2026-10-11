@@ -1,0 +1,60 @@
+---
+import DashboardLayout from '../../../layouts/DashboardLayout.astro';
+import { Truck, MapPin, Globe, CreditCard } from 'lucide-react';
+
+const zones = [
+  { name: "Nacional (México)", price: "$120.00", time: "3-5 días", status: "Activo" },
+  { name: "Local (CDMX)", price: "$50.00", time: "1-2 días", status: "Activo" },
+  { name: "Internacional", price: "$450.00", time: "10-15 días", status: "Inactivo" },
+];
+---
+
+<DashboardLayout title="Configuración de Envíos">
+  <div class="max-w-4xl space-y-8">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800">Logística y Tasas</h1>
+      <p class="text-slate-500 text-sm">Configura métodos de envío y cálculo de impuestos (IVA).</p>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm">
+      <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+        <h2 class="font-bold text-slate-700 flex items-center gap-2"><Truck size={20} class="text-blue-500" /> Métodos de Entrega</h2>
+        <button class="text-blue-600 text-sm font-bold hover:underline">+ Añadir zona</button>
+      </div>
+      <div class="divide-y divide-slate-100">
+        {zones.map((zone) => (
+          <div class="p-6 flex items-center justify-between hover:bg-slate-50/50 transition-colors">
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-500">
+                <MapPin size={20} />
+              </div>
+              <div>
+                <p class="font-bold text-slate-800">{zone.name}</p>
+                <p class="text-xs text-slate-400 italic">Tiempo estimado: {zone.time}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-8">
+              <span class="font-mono font-bold text-slate-700">{zone.price}</span>
+              <div class={`w-12 h-6 rounded-full relative transition-colors ${zone.status === 'Activo' ? 'bg-green-500' : 'bg-slate-200'}`}>
+                <div class={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${zone.status === 'Activo' ? 'right-1' : 'left-1'}`}></div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="bg-blue-900 rounded-2xl p-6 text-white flex items-center justify-between shadow-lg shadow-blue-200">
+      <div class="flex items-center gap-4">
+        <div class="p-3 bg-blue-800 rounded-xl"><Globe size={24} /></div>
+        <div>
+          <p class="font-bold">Impuesto General (IVA)</p>
+          <p class="text-blue-300 text-sm">Configurado actualmente al 16%</p>
+        </div>
+      </div>
+      <button class="bg-white text-blue-900 px-4 py-2 rounded-lg font-bold text-sm hover:bg-blue-50 transition-colors">
+        Cambiar Tasa
+      </button>
+    </div>
+  </div>
+</DashboardLayout>

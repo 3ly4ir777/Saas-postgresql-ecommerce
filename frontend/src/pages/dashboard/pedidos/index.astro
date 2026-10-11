@@ -1,0 +1,79 @@
+---
+import DashboardLayout from '../../../layouts/DashboardLayout.astro';
+import { Search, Eye, Download, Filter, PackageCheck } from 'lucide-react';
+
+const orders = [
+  { id: "#ORD-7701", customer: "Juan Pérez", date: "12 Mar 2026", total: 150.50, status: "Completado", payment: "Pagado" },
+  { id: "#ORD-7702", customer: "María García", date: "11 Mar 2026", total: 85.00, status: "Pendiente", payment: "Pendiente" },
+  { id: "#ORD-7703", customer: "Carlos Ruiz", date: "10 Mar 2026", total: 210.00, status: "Enviado", payment: "Pagado" },
+];
+---
+
+<DashboardLayout title="Pedidos">
+  <div class="space-y-6">
+    <div class="flex justify-between items-end">
+      <div>
+        <h1 class="text-2xl font-bold text-slate-800">Gestión de Pedidos</h1>
+        <p class="text-slate-500 text-sm">Monitorea las ventas y estados de envío.</p>
+      </div>
+      <button class="flex items-center gap-2 bg-white border border-slate-200 px-4 py-2 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors shadow-sm">
+        <Download size={18} /> Reporte Mensual
+      </button>
+    </div>
+
+    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex gap-4">
+      <div class="relative flex-1">
+        <Search class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+        <input type="text" placeholder="Buscar por ID o cliente..." class="w-full pl-10 pr-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500/20" />
+      </div>
+      <select class="px-4 py-2 border rounded-lg bg-white text-slate-600 outline-none">
+        <option>Todos los estados</option>
+        <option>Completado</option>
+        <option>Pendiente</option>
+        <option>Cancelado</option>
+      </select>
+    </div>
+
+    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      <table class="w-full text-left">
+        <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 text-sm">
+          <tr>
+            <th class="px-6 py-4 font-semibold">ID Pedido</th>
+            <th class="px-6 py-4 font-semibold">Cliente</th>
+            <th class="px-6 py-4 font-semibold">Fecha</th>
+            <th class="px-6 py-4 font-semibold">Total</th>
+            <th class="px-6 py-4 font-semibold">Pago</th>
+            <th class="px-6 py-4 font-semibold">Estado</th>
+            <th class="px-6 py-4 font-semibold text-right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          {orders.map((order) => (
+            <tr class="hover:bg-slate-50/50 transition-colors text-sm">
+              <td class="px-6 py-4 font-bold text-blue-600">{order.id}</td>
+              <td class="px-6 py-4 text-slate-700 font-medium">{order.customer}</td>
+              <td class="px-6 py-4 text-slate-500">{order.date}</td>
+              <td class="px-6 py-4 font-semibold">${order.total.toFixed(2)}</td>
+              <td class="px-6 py-4">
+                <span class={`px-2 py-1 rounded-md text-[10px] uppercase font-bold ${order.payment === 'Pagado' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
+                  {order.payment}
+                </span>
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                  <span class="text-slate-600">{order.status}</span>
+                </div>
+              </td>
+              <td class="px-6 py-4 text-right">
+                <button class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg">
+                  <Eye size={18} />
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</DashboardLayout>

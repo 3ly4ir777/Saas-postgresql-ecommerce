@@ -1,0 +1,61 @@
+---
+import DashboardLayout from '../../../layouts/DashboardLayout.astro';
+import { Search, UserPlus, MoreVertical, Mail, ShieldCheck } from 'lucide-react';
+
+const users = [
+  { id: 1, name: "Admin Principal", email: "admin@tienda.com", role: "Administrador", status: "Activo", avatar: "https://ui-avatars.com/api/?name=Admin+P&background=0D8ABC&color=fff" },
+  { id: 2, name: "Ana López", email: "ana.l@gmail.com", role: "Cliente", status: "Activo", avatar: "https://ui-avatars.com/api/?name=Ana+L&background=7c3aed&color=fff" },
+  { id: 3, name: "Roberto M.", email: "robert@outlook.com", role: "Cliente", status: "Inactivo", avatar: "https://ui-avatars.com/api/?name=Robert+M&background=94a3b8&color=fff" },
+];
+---
+
+<DashboardLayout title="Usuarios">
+  <div class="space-y-6">
+    <div class="flex justify-between items-center">
+      <div>
+        <h1 class="text-2xl font-bold text-slate-800">Usuarios</h1>
+        <p class="text-slate-500 text-sm">Administra los accesos y roles de la plataforma.</p>
+      </div>
+      <button class="flex items-center gap-2 bg-slate-900 px-4 py-2 rounded-lg text-white hover:bg-slate-800 transition-all shadow-md">
+        <UserPlus size={18} /> Invitar Usuario
+      </button>
+    </div>
+
+    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
+      <div class="relative flex-1">
+        <Search class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+        <input type="text" placeholder="Buscar por nombre o correo..." class="w-full pl-10 pr-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500/10 transition-all" />
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {users.map((user) => (
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow relative group">
+          <button class="absolute top-4 right-4 text-slate-300 hover:text-slate-600">
+            <MoreVertical size={20} />
+          </button>
+          
+          <div class="flex items-center gap-4">
+            <img src={user.avatar} alt={user.name} class="w-14 h-14 rounded-full border-2 border-slate-100" />
+            <div>
+              <h3 class="font-bold text-slate-800">{user.name}</h3>
+              <div class="flex items-center gap-1 text-slate-400 text-xs">
+                <Mail size={12} /> {user.email}
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 flex items-center justify-between border-t border-slate-50 pt-4">
+            <div class="flex items-center gap-1 text-slate-600 text-sm">
+              <ShieldCheck size={16} class={user.role === 'Administrador' ? 'text-blue-500' : 'text-slate-400'} />
+              {user.role}
+            </div>
+            <span class={`text-[10px] font-bold px-2 py-1 rounded-full ${user.status === 'Activo' ? 'bg-green-50 text-green-600' : 'bg-slate-100 text-slate-400'}`}>
+              {user.status.toUpperCase()}
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</DashboardLayout>

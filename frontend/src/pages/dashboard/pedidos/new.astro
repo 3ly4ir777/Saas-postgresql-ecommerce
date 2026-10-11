@@ -1,0 +1,19 @@
+---
+import DashboardLayout from '../../../layouts/DashboardLayout.astro';
+import ProductForm from '../../../components/ProductForm';
+import { ArrowLeft } from 'lucide-react';
+---
+
+<DashboardLayout title="Nuevo Producto">
+  <div class="mb-8 flex items-center gap-4">
+    <a href="/dashboard/products" class="p-2 hover:bg-slate-200 rounded-full transition-colors text-slate-600">
+      <ArrowLeft size={24} />
+    </a>
+    <div>
+      <h1 class="text-3xl font-bold text-slate-800">Crear Producto</h1>
+      <p class="text-slate-500 text-sm">Añade un nuevo ítem a tu catálogo de TypeORM.</p>
+    </div>
+  </div>
+
+  <ProductForm client:load />
+</DashboardLayout>
